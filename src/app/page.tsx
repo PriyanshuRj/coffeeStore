@@ -1,27 +1,50 @@
+"use client";
+import { useState, useEffect , useContext  } from 'react'
 import Image from 'next/image'
 import styles from './page.module.css'
 import Head from 'next/head'
 import Hero from '../components/Hero'
 import { fetchStores } from '../../libs/fetchStores'
 import Card from '@/components/Card'
-import type { InferGetStaticPropsType, GetStaticProps } from 'next'
+import useTrachLocation from "../hooks/use-track-location";
+import {ACTION_TYPES, StoreContext} from "../store/store";
 import Link from 'next/link'
 
 export default async function Home() {
-  const data = await fetchStores();
   
+  const { dispatch, state } = useContext(StoreContext);
+  const { coffeeStores, latlong } = state;
+ 
+
+
+  const [coffeeStoresError, setCoffeeStoresError] = useState("");
+  //  console.log(latlong, coffeeStoresError)
+  const handleOnBannerBtnClick = () => {
+    console.log("called",latlong, coffeeStoresError)
+    handleTrachLocation();
+    setCoffeeStoresError("jguh")
+  };
+
+  useEffect(() => {
+    console.log("these ",latlong)
+}, [latlong])
+
+  const { locationError, isFindingLocation, handleTrachLocation } = await useTrachLocation();
+
+
+  const data = await fetchStores();
+
   return (
     <>
-      <Head>
-        <title>My page title</title>
-      </Head>
       <main className={styles.main}>
-        <Hero />
+        cc {coffeeStoresError}
+        <Hero handleOnBannerBtnClick={handleOnBannerBtnClick}/>
         <div className={styles.cardGrid}>
           {data.map((coffeeStore:any,index:number)=>{
-            return   <Link href={"/coffeestore/" + coffeeStore.id} >
+            return   <Link key={coffeeStore.id} href={"/coffeestore/" + coffeeStore.id} >
             <Card 
               className={styles.card}
+              key={coffeeStore.id}
               name= {coffeeStore.name}
               address = {coffeeStore.address}
               id={coffeeStore.id}

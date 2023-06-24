@@ -63,8 +63,8 @@ export default async function CoffeeStore({ params }: { params: { id: string } }
             </span>
           </div>
           <button className={styles.upvotebutton}>
-                        Up vote
-</button>
+            Up vote
+          </button>
         </div>
       </div>
     </div>

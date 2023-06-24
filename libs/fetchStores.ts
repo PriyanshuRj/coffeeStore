@@ -1,7 +1,7 @@
 import { createApi } from "unsplash-js";
 
 const unsplash = createApi({
-  accessKey : process.env.UNSPASH_ACCESS_API_KEY ? process.env.UNSPASH_ACCESS_API_KEY : ""
+  accessKey : process.env.NEXT_PUBLIC_UNSPASH_ACCESS_API_KEY ? process.env.NEXT_PUBLIC_UNSPASH_ACCESS_API_KEY : ""
 })
 
 const getUrlForCoffeeStores = (latLong:string, query:string, limit:number) => {
@@ -22,7 +22,7 @@ export async function fetchStores(
         method: "GET",
         headers: {
           Accept: "application/json",
-          Authorization: process.env.FOURPLACE_API_KEY ? process.env.FOURPLACE_API_KEY : "",
+          Authorization: process.env.NEXT_PUBLIC_FOURPLACE_API_KEY ? process.env.NEXT_PUBLIC_FOURPLACE_API_KEY : "",
         },
       };
     
