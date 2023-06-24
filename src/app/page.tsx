@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 export default async function Home() {
   const data = await fetchStores();
-  // console.log(data)
+  
   return (
     <>
       <Head>
@@ -25,7 +25,7 @@ export default async function Home() {
               name= {coffeeStore.name}
               address = {coffeeStore.address}
               id={coffeeStore.id}
-              imageURL="https://source.unsplash.com/random/?coffee"
+              imageURL= {coffeeStore.imgUrl}
               />
               </Link>
           })}
