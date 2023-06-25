@@ -1,3 +1,4 @@
+
 import { createApi } from "unsplash-js";
 
 const unsplash = createApi({
@@ -31,7 +32,7 @@ export async function fetchStores(
         options
       );
       const data = await response.json();
-      return data.results ? data.results.map((result: any, index: number) => {
+      return  data.results.map((result: any, index: number) => {
         const neighborhood = result.location.neighborhood;
         return {
             id: result.fsq_id,
@@ -40,5 +41,5 @@ export async function fetchStores(
             neighbourhood: neighborhood?.length > 0 ? neighborhood[0] : "",
             imgUrl:  unsplashResults.length > index ? unsplashResults[index] : "https://source.unsplash.com/random/?coffee",
           };
-      }) : []
+      })
 }

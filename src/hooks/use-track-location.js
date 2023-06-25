@@ -2,7 +2,7 @@
 import { useContext, useState } from "react";
 import {ACTION_TYPES, StoreContext} from "../store/store";
 
-export default async function useTrachLocation(){
+export default function useTrackLocation(){
     const [locationError, setLocationError] = useState("");
     const [isFindingLocation, setIsFindingLocation] = useState(false);
     const { dispatch } = useContext(StoreContext);
