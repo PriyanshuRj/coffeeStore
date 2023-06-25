@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useContext } from 'react'
+import useSWR from 'swr'
 import Image from 'next/image'
 import styles from "../../../../styles/store.module.css"
 import cls from "classnames"
@@ -11,21 +12,23 @@ export default function CoffeeStorePage(initialProps: any) {
     const id = initialProps.id;
     const { state } = useContext(StoreContext);
     const [storeData, setStoreData] = useState(initialProps);
+    const [votingCount, setVotingCount] = useState(0);
     const { coffeestores } = state;
+    
     const handleCreateCoffeeStore = async (storeData: any) => {
         
         
         try {
-
+            console.log(storeData)
             const { name, imgUrl, address,id,votes } = storeData;
             console.log(name, imgUrl, address,id)
-            if(name && id){
+            if(name && id && imgUrl){
 
                 const body = JSON.stringify({name,
                                 imgUrl,
                                 address,
                                 id,
-                                votes
+                                votes: votes?votes:0
                 });
                 const options = {
                     method: "POST",
@@ -51,6 +54,7 @@ export default function CoffeeStorePage(initialProps: any) {
                 const store = coffeestores.find((store: any) => store.id == id)
                 setStoreData(store);
                 handleCreateCoffeeStore(store);
+                
             }
         }
         else {
@@ -58,7 +62,25 @@ export default function CoffeeStorePage(initialProps: any) {
         }
     }, [id])
 
-    const { name, imgUrl, address } = storeData;
+    function handleUpVote(){
+        setVotingCount(prev => prev+1);
+    }
+    const { name, imgUrl, address,votes } = storeData;
+
+    const fetcher = (url:RequestInfo | URL) => fetch(url).then(r => r.json())
+    const { data, error, isLoading } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
+    useEffect(()=>{
+        if(data){
+            console.log("sdfg",data)
+            const coffeeStore =data.coffeeStore;
+            setStoreData(coffeeStore);
+            setVotingCount(coffeeStore.votes)
+        }
+        console.log(data, error, isLoading)
+    },[data])
+    if(error){
+        return <div> Somting went wrong !!</div>
+    }
 
     return (
         <div className={styles.store}>
@@ -109,10 +131,10 @@ export default function CoffeeStorePage(initialProps: any) {
                         />
                         <span>
 
-                            1
+                            {votingCount}
                         </span>
                     </div>
-                    <button className={styles.upvotebutton}>
+                    <button className={styles.upvotebutton} onClick={handleUpVote}>
                         Up vote
                     </button>
                 </div>

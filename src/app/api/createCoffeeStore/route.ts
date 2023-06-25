@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import table from '../../../../libs/AirtableConfig';
 
 export async function POST(request:Request) {
-    const {id, votes, name, address, imageUrl} = await request.json();
+    const {id, votes, name, address, imgUrl} = await request.json();
     try{
 
         if(id  &&  name != undefined ){
@@ -19,7 +19,7 @@ export async function POST(request:Request) {
                         votes:votes,
                         name:name,
                         address:address,
-                        imageUrl:imageUrl
+                        imgUrl:imgUrl
                     }
                 }])
                 return NextResponse.json({ message: "created record", coffeeStore:createRecords[0].fields }, { status: 200 })
