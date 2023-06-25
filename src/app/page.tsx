@@ -7,8 +7,6 @@ import Card from '@/components/Card'
 import Link from 'next/link'
 
 export default function Home() {
-
-
   
   const data = staticProps();
   return (

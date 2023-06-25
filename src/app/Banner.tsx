@@ -7,21 +7,13 @@ import Card from '@/components/Card'
 import useTrackLocation from "../hooks/use-track-location";
 import {ACTION_TYPES, StoreContext} from "../store/store";
 import Link from 'next/link'
-
+import Loading from '@/components/Loading';
 export default function Banner() {
   
   const { dispatch, state } = useContext(StoreContext);
   const { coffeestores, latlong } = state;
-  async function getStores(){
-    const data = await fetchStores();
-    setCoffeeStoreData(data);
-  }
-  
-  const [coffeeStoreData, setCoffeeStoreData] = useState([]);
-  useEffect(()=>{
 
-    // console.log(data)
-  },[])
+
   const [coffeeStoresError, setCoffeeStoresError] = useState("");
 
   useEffect(() => {
@@ -50,6 +42,7 @@ export default function Banner() {
   
   return (
     <>
+    {isFindingLocation? <Loading /> : undefined}
      <Hero handleOnBannerBtnClick={handleOnBannerBtnClick} locationError={locationError}/>
         {coffeestores.length ? <div className={styles.storeContainer}>
           <p className={styles.storesContainerTitle}>Stores Near Me</p>
