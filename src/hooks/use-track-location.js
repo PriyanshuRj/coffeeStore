@@ -17,7 +17,6 @@ export default function useTrackLocation(){
         setIsFindingLocation(false);
     }
     const error = (error) =>{
-        console.log(error);
         setLocationError(error.message);
     }
     const handleTrachLocation = () => {

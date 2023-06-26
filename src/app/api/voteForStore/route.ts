@@ -9,13 +9,13 @@ export async function PUT(request:Request){
         if(id){
             const findCoffeeSroteRecords = await table.select({filterByFormula: `id="${id}"`}).firstPage();
             if(findCoffeeSroteRecords.length){
-                console.log(findCoffeeSroteRecords[0].id);
+                const coffeeStore:any = {...findCoffeeSroteRecords[0].fields, RecordId : findCoffeeSroteRecords[0].id};
                 var votes: number =  0;
-                if(typeof findCoffeeSroteRecords[0].fields.votes ==='number') votes = findCoffeeSroteRecords[0].fields.votes
+                if(typeof coffeeStore.votes ==='number') votes = coffeeStore.votes + 1
                 const createRecords = await table.update([{
-                    id : findCoffeeSroteRecords[0].id,
+                    id : coffeeStore.RecordId,
                     fields : {
-                        votes : votes + 1
+                        votes
                     }
                 }])
                 return NextResponse.json({coffeeStore : createRecords[0].fields}, {status : 200})
@@ -29,7 +29,6 @@ export async function PUT(request:Request){
 
         }
     } catch(e){
-        console.log(e);
-        return NextResponse.json({message:"Something went wrong"}, {status : 500})
+        return NextResponse.json({message:"Something went wrong",e}, {status : 500})
     }
 }

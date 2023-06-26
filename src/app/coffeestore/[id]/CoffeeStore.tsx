@@ -19,9 +19,7 @@ export default function CoffeeStorePage(initialProps: any) {
         
         
         try {
-            console.log(storeData)
             const { name, imgUrl, address,id,votes } = storeData;
-            console.log(name, imgUrl, address,id)
             if(name && id && imgUrl){
 
                 const body = JSON.stringify({name,
@@ -41,10 +39,9 @@ export default function CoffeeStorePage(initialProps: any) {
                 const response = await fetch("/api/createCoffeeStore", 
                         options)
                 const dpCoffeeStore = await response.json();
-                console.log(dpCoffeeStore);
             }
         } catch (e){
-            console.log("Error ",e)
+            new Error("Unable to update record")
         }
     }
     useEffect(() => {
@@ -62,8 +59,26 @@ export default function CoffeeStorePage(initialProps: any) {
         }
     }, [id])
 
-    function handleUpVote(){
-        setVotingCount(prev => prev+1);
+    async function handleUpVote(){
+        
+        try {
+            setVotingCount(prev => prev+1);
+            const { id } = storeData;
+            if(id){
+                const options = {
+                    method: "PUT",
+                    headers: {
+                        Accept: "application/json",
+                        'Content-Type': 'application/json'
+                    },
+                }
+                const response = await fetch(`/api/voteForStore?id=${id}`, 
+                        options)
+                const dpCoffeeStore = await response.json();
+            }
+        } catch (e){
+            new Error("Unable to update record")
+        }
     }
     const { name, imgUrl, address,votes } = storeData;
 
@@ -71,12 +86,13 @@ export default function CoffeeStorePage(initialProps: any) {
     const { data, error, isLoading } = useSWR(`/api/getCoffeeStoreById?id=${id}`, fetcher);
     useEffect(()=>{
         if(data){
-            console.log("sdfg",data)
             const coffeeStore =data.coffeeStore;
-            setStoreData(coffeeStore);
-            setVotingCount(coffeeStore.votes)
+            if(coffeeStore){
+
+                setStoreData(coffeeStore);
+                setVotingCount(coffeeStore.votes)
+            }
         }
-        console.log(data, error, isLoading)
     },[data])
     if(error){
         return <div> Somting went wrong !!</div>

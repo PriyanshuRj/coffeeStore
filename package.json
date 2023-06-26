@@ -24,6 +24,7 @@
     "unsplash-js": "^7.0.18"
   },
   "devDependencies": {
+    "@types/airtable": "^0.10.1",
     "encoding": "^0.1.13"
   }
 }
