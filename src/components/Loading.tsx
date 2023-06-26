@@ -9,7 +9,7 @@ export default function Loading() {
             height="320"
             width="320"
             // radius="9"
-            color="rgb(30 64 175)"
+            color="#EA8347"
             ariaLabel="loading"
           />
         </span>
